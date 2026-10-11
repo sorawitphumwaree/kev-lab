@@ -7,7 +7,10 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import unittest
 from pathlib import Path
+
+import test_browser_access
 
 ROOT = Path(__file__).resolve().parent
 BASE = "http://127.0.0.1:8018"
@@ -54,6 +57,10 @@ def main():
     parser.add_argument("--port", type=int, default=8018)
     args = parser.parse_args()
     BASE = f"http://127.0.0.1:{args.port}"
+    test_browser_access.BASE = BASE
+    access_tests = unittest.defaultTestLoader.loadTestsFromTestCase(test_browser_access.BrowserAccessTests)
+    if not unittest.TextTestRunner(verbosity=1).run(access_tests).wasSuccessful():
+        raise SystemExit("Browser access regression checks failed")
     cases = json.loads((ROOT / "test-cases.json").read_text(encoding="utf-8"))
     metadata, _ = call("/v1/models")
     assert metadata["models"][0]["device"] == "cuda", "GPU serving was not verified"
@@ -126,7 +133,7 @@ def main():
               "option_order": permutation, "option_order_wall_ms": wall,
               "checks": {"gpu": True, "ui_routes": True, "probability_contract": True, "invalid_request_422": True,
                          "session_export_attachment": True, "invalid_export_400": True,
-                         "local_browser_origin": True, "export_limits": True},
+                         "local_browser_origin": True, "export_limits": True, "browser_navigation": True},
               "note": "Small authored examples; not a representative accuracy benchmark."}
     (ROOT / "results").mkdir(exist_ok=True)
     (ROOT / "results" / "verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
