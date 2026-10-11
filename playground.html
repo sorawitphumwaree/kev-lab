@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kev Local Lab</title>
+  <link rel="stylesheet" href="/assets/playground.css">
+  <script src="/assets/playground.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>Kev Local Lab</h1><p>Build a decision request, one question at a time.</p></div>
+    <span class="badge" id="status">Connecting to local model…</span>
+  </header>
+  <div class="layout">
+    <section aria-label="Request builder">
+      <fieldset id="builder">
+        <div class="panel">
+          <div class="section-heading"><h2>Start your experiment</h2><button id="clear" type="button">Clear form</button></div>
+          <div class="example-picker">
+            <label for="example">Example</label>
+            <div class="inline"><select id="example"><option value="">Choose an example…</option></select><button id="load-example" type="button">Load example</button></div>
+          </div>
+          <div id="example-note" class="note" hidden><p id="lesson"></p><p id="expected" class="small"></p></div>
+          <label for="state">State <span class="required">Required</span></label>
+          <textarea id="state" rows="6" maxlength="16000" placeholder="Enter the facts, document, message, or policy you want the model to evaluate." aria-describedby="state-help"></textarea>
+          <p class="small" id="state-help">Keep your first experiments short. <span id="state-count">0 / 16,000 characters</span></p>
+        </div>
+        <div class="section-heading questions-heading"><div><h2>Questions <span id="question-count" class="count">0</span></h2><p class="small">Choose a type, then fill in its fields.</p></div><button id="add-question" type="button">+ Add question</button></div>
+        <div id="questions"></div>
+        <div class="empty" id="empty-questions">No questions yet. Add a question to start.</div>
+      </fieldset>
+      <div class="panel run-panel">
+        <div id="validation" class="validation" role="alert" hidden></div>
+        <button class="primary" id="run" type="button" disabled>Run decision</button>
+        <p id="activity" class="small" role="status" aria-live="polite">Preparing the local model connection…</p>
+      </div>
+    </section>
+    <aside>
+      <section class="panel">
+        <h2>How to explore</h2>
+        <ol class="guide"><li>Write the evidence in State.</li><li>Add questions and define the available answers.</li><li>Predict the answers, run, then change one fact.</li></ol>
+        <p class="small">Results appear beneath each question. Probabilities are estimates, not guarantees.</p>
+        <p id="timing" class="note small">No request sent yet.</p>
+      </section>
+      <section class="panel">
+        <h2>Option-order check</h2>
+        <label for="permutation-question">Choice question</label>
+        <select id="permutation-question"><option value="">Add a Choice question first</option></select>
+        <button id="shuffle" type="button" disabled>Test option order × 6</button>
+        <p class="small">Compare six runs with shuffled choices. Duplicate orders can occur.</p>
+        <div id="permutation-result"></div>
+      </section>
+      <section class="panel">
+        <details><summary>Advanced / JSON preview</summary><p class="small">Generated automatically from the form. Read-only.</p><pre id="request-preview">Complete the form to preview a valid request.</pre></details>
+        <details><summary>Last raw response</summary><pre id="raw">No response yet.</pre></details>
+      </section>
+      <section class="panel">
+        <h2>Session history</h2>
+        <p class="small">Your draft and results live in this tab. Export results before closing or reloading.</p>
+        <div id="history" class="history"></div>
+        <button id="export" type="button" disabled>Export session JSON</button>
+      </section>
+    </aside>
+  </div>
+  <footer><p class="small">Kev-0.8B v1.0 · Running locally · English is the documented language</p><p class="small"><a href="/docs" target="_blank">Local API docs</a> · <a href="https://github.com/jaredpalmer/kev" target="_blank" rel="noreferrer">Upstream source</a></p></footer>
+</main>
+</body>
+</html>

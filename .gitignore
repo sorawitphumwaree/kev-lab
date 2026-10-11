@@ -1,0 +1,13 @@
+.runtime/
+.tools/
+.venv/
+__pycache__/
+logs/
+results/
+requirements-installed.txt
+playground-preview.png
+playground-builder-preview.png
+.env
+.env.*
+*.log
+kev-session-*.json
