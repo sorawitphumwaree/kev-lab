@@ -31,6 +31,7 @@ From the repository folder in PowerShell:
 ```
 
 Open **http://127.0.0.1:8018** after the server reports that startup is complete.
+Opening the main page through a link from another website is supported.
 The first start downloads the model. Later starts reuse its local cache;
 Hugging Face metadata checks may still use the network.
 
@@ -96,6 +97,10 @@ With the server running, execute the API integration checks:
 
 The checks exercise real GPU inference, probability contracts, repeated requests,
 permutations, malformed requests, browser-origin restrictions, and downloads.
+Browser-access regression checks include external-link navigation while keeping
+cross-site API calls, form posts, and frames blocked. To run these checks alone
+against a running lab, use `.\.venv\Scripts\python.exe -m unittest test_browser_access -v`.
+Set `KEV_LAB_URL` in the shell to test a different localhost port.
 Model accuracy observations are recorded separately from application assertions
 in the ignored `results/verification.json`.
 Use the [manual checklist](manual-test-checklist.md) to review form behavior.

@@ -22,11 +22,15 @@ async def local_browser_only(request: Request, call_next):
     origin = request.headers.get("origin")
     expected = f"{request.url.scheme}://{request.url.netloc}"
     site = request.headers.get("sec-fetch-site")
+    # Following an external link is navigation, not a cross-origin API call.
+    main_navigation = (request.method == "GET" and request.url.path == "/"
+                       and request.headers.get("sec-fetch-mode") == "navigate"
+                       and request.headers.get("sec-fetch-dest") == "document")
     # Some embedded browsers send Origin: null for native form downloads.
     # Fetch Metadata still identifies a same-origin form; cross-site forms fail.
     local_download = (request.method == "POST" and request.url.path == "/lab/export"
                       and origin == "null" and site == "same-origin")
-    if (origin and origin != expected and not local_download) or site == "cross-site":
+    if not main_navigation and ((origin and origin != expected and not local_download) or site == "cross-site"):
         return Response("Cross-origin requests are disabled", status_code=403)
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"

@@ -2,6 +2,8 @@
 
 Start the server and open http://127.0.0.1:8018.
 
+- Open the main page by clicking a link from another website or chat; the form should load without a 403.
+
 - Start from the blank page, enter a State, and add a question.
 - Try Choice, Yes / No and Score, including optional descriptions.
 - Add and remove questions, choices and score levels; reorder score levels.
